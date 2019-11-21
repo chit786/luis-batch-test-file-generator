@@ -1,0 +1,24 @@
+{
+  "name": "luis-batch-test-generator",
+  "version": "0.0.1",
+  "description": "batch test file generator tool for Microsoft LUIS",
+  "main": "luis-batch-file-generator.js",
+  "scripts": {
+    "test": "node ./luis-batch-file-generator.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/chit786/luis-batch-test-file-generator.git"
+  },
+  "keywords": [
+    "luis",
+    "batch",
+    "testing"
+  ],
+  "author": "chitrang natu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chit786/luis-batch-test-file-generator/issues"
+  },
+  "homepage": "https://github.com/chit786/luis-batch-test-file-generator#readme"
+}
