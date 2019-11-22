@@ -9,10 +9,6 @@ const dataSetDir = "./data-sets";
 
 let coveredSynonyms = [];
 
-if (!fs.existsSync(dataSetDir)){
-    throw new Error("missing data-sets folder, please create one and keep all your files in the folder");
-};
-
 function computeEntities(utterance, config) {
     let entities = [];
     let entity = {};
@@ -198,45 +194,52 @@ function computeIntentCoverage(config) {
     console.log(table);
 }
 
-let dt = new Date();
-dt = `${
-    (dt.getMonth()+1).toString().padStart(2, '0')}_${
-    dt.getDate().toString().padStart(2, '0')}_${
-    dt.getFullYear().toString().padStart(4, '0')}_${
-    dt.getHours().toString().padStart(2, '0')}:${
-    dt.getMinutes().toString().padStart(2, '0')}:${
-    dt.getSeconds().toString().padStart(2, '0')}`;
+exports.generateBatchFiles = function () {
 
-fs.readdirSync(dataSetDir).forEach(file => {
-    let intent_utterances_input = require(`./${dataSetDir}/${file}`);
-    let output = [];
-    let utterances = intentUtteranceGenerator(intent_utterances_input).toString().split("\n");
+    if (!fs.existsSync(dataSetDir)){
+        throw new Error("missing data-sets folder, please create one and keep all your files in the folder");
+    };
 
-    let filtered = utterances.filter(function (el) {
-        return el != '';
+    let dt = new Date();
+    dt = `${
+        (dt.getMonth()+1).toString().padStart(2, '0')}_${
+        dt.getDate().toString().padStart(2, '0')}_${
+        dt.getFullYear().toString().padStart(4, '0')}_${
+        dt.getHours().toString().padStart(2, '0')}:${
+        dt.getMinutes().toString().padStart(2, '0')}:${
+        dt.getSeconds().toString().padStart(2, '0')}`;
+
+    fs.readdirSync(dataSetDir).forEach(file => {
+        let intent_utterances_input = require(`./${dataSetDir}/${file}`);
+        let output = [];
+        let utterances = intentUtteranceGenerator(intent_utterances_input).toString().split("\n");
+
+        let filtered = utterances.filter(function (el) {
+            return el != '';
+        });
+
+        if(filtered.length > 1000 ) {
+            throw new Error("LUIS do not allow more then 1000 utterances in one file");
+        }
+
+        for (let i = 0 ; i < filtered.length; i++) {
+            let testUtt = {
+                "text": filtered[i].substr(filtered[i].indexOf(" ") + 1),
+                "intent": filtered[i].substr(0, filtered[i].indexOf(" ")),
+                "entities": computeEntities(filtered[i].substr(filtered[i].indexOf(" ") + 1), config)
+            };
+            if (!fs.existsSync(`${reportDir}_${dt}`)){
+                fs.mkdirSync(`${reportDir}_${dt}`);
+            };
+            output.push(testUtt);
+        }
+
+        fs.writeFileSync(`./${reportDir}_${dt}/${file}`, JSON.stringify(output, null, 2));
     });
 
-    if(filtered.length > 1000 ) {
-        throw new Error("LUIS do not allow more then 1000 utterances in one file");
-    }
+    computeIntentCoverage(config);
 
-    for (let i = 0 ; i < filtered.length; i++) {
-        let testUtt = {
-            "text": filtered[i].substr(filtered[i].indexOf(" ") + 1),
-            "intent": filtered[i].substr(0, filtered[i].indexOf(" ")),
-            "entities": computeEntities(filtered[i].substr(filtered[i].indexOf(" ") + 1), config)
-        };
-        if (!fs.existsSync(`${reportDir}_${dt}`)){
-            fs.mkdirSync(`${reportDir}_${dt}`);
-        };
-        output.push(testUtt);
-    }
+    publishEntitiesCoverage(config, `${reportDir}_${dt}`);
 
-    fs.writeFileSync(`./${reportDir}_${dt}/${file}`, JSON.stringify(output, null, 2));
-});
-
-computeIntentCoverage(config);
-
-publishEntitiesCoverage(config, `${reportDir}_${dt}`);
-
-publishCoveredEntityWords();
+    publishCoveredEntityWords();
+};
