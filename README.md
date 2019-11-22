@@ -36,7 +36,11 @@ This tool can help you automatically create [batch testing](https://docs.microso
 - Addition to that you will see following types of test coverages on your terminal: 
 
      >  INTENTS COVERAGE  
+     
      >  NOT COVERED INTENTS LIST
+     
      >  COVERED ENTITIES
+     
      >  Entities Coverage
+     
      >  Synonyms Covered
