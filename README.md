@@ -35,8 +35,8 @@ This tool can help you automatically create [batch testing](https://docs.microso
 - Thats it! and you will have the `tedious` job of creation of the LUIS batch file done for you! You will find them in the folder named `batch_files_xx_xx_xx`
 - Addition to that you will see following types of test coverages on your terminal: 
 
- 1. INTENTS COVERAGE  
- 2. NOT COVERED INTENTS LIST
- 3. COVERED ENTITIES
- 4. Entities Coverage
- 5. Synonyms Covered
+     >  INTENTS COVERAGE  
+     >  NOT COVERED INTENTS LIST
+     >  COVERED ENTITIES
+     >  Entities Coverage
+     >  Synonyms Covered
