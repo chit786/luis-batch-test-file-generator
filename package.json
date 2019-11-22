@@ -6,6 +6,10 @@
   "scripts": {
     "test": "node ./luis-batch-file-generator.js"
   },
+  "dependencies": {
+    "chalk-table": "^1.0.2",
+    "intent-utterance-generator": "0.0.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/chit786/luis-batch-test-file-generator.git"

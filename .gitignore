@@ -1,2 +1,4 @@
 data-sets
 dev-modal.json
+node_modules
+batch_files*
