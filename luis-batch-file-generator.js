@@ -3,7 +3,7 @@ const intentUtteranceGenerator = require("intent-utterance-generator");
 const chalk = require("chalk");
 const chalkTable = require("chalk-table/src");
 
-const config = require('./dev-modal.json');
+const config = require('./modal.json');
 const reportDir = "./batch_files";
 const dataSetDir = "./data-sets";
 
